@@ -26,7 +26,10 @@
 	
 	ini_set("E_NOTICE", 0);
 	$i = 0;
-	$myFile = 'servers';
+	// Connect to MySQL to grab the shizzle
+    mysql_connect($mysqlhost, $mysqluser, $mysqlpass);
+	mysql_select_db($mysqldatabase);
+	// This will be replaced with mysql stuff later
 	$fh = fopen($myFile, 'r');
 	$lines = fread($fh, filesize($myFile)) or die("No servers available for connection");
 	$lines = explode("\n", $lines);
