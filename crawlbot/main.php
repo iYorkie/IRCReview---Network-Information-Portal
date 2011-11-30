@@ -27,8 +27,8 @@
 	ini_set("E_NOTICE", 0);
 	$i = 0;
 	// Connect to MySQL to grab the shizzle
-    mysql_connect($GLOBALS['mysqlhost'], $GLOBALS['$mysqluser'], $GLOBALS['mysqlpass']);
-	mysql_select_db($GLOBALS['mysqldatabase']);
+    mysql_connect($mysqlhost, $mysqluser, $mysqlpass);
+	mysql_select_db($mysqldatabase);
     $result = mysql_query("SELECT * FROM `servers` ORDER BY `id` DESC");
     while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 		if (trim($row['server']) != null) {
@@ -79,8 +79,8 @@
 				unset($this->runs);
 				$servers = null;
 				$i = 0;
-				 mysql_connect($GLOBALS['mysqlhost'], $GLOBALS['$mysqluser'], $GLOBALS['mysqlpass']);
-				mysql_select_db($GLOBALS['mysqldatabase']);
+				 mysql_connect($mysqlhost, $$mysqluser, $mysqlpass);
+				mysql_select_db($mysqldatabase);
 				$result = mysql_query("SELECT * FROM `servers` ORDER BY `id` DESC");
 				while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 				if (trim($row['server']) != null) {
