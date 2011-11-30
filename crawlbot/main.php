@@ -133,10 +133,14 @@
 				}
 				if ($this->ex[1] == '323')
 				{
-					$fh = fopen($GLOBALS['initialDir'].date('m').'-'.date('d').'-'.date('Y').'-'.$servers[($this->runs - 1)]."-channels.txt", 'w');
-					fwrite($fh, implode(NULL, $this->channels));
-					fclose($fh);
+					$channels = implode(NULL, $this->channels);
 					unset($this->channels);
+                                   $check_query = mysql_query("SELECT `id` FROM `channels` WHERE `server` = '".mysql_real_escape_string($servers[($this->runs - 1)])."'");
+                     	   if (mysql_num_rows($check_query) == 1) { mysql_query("UPDATE channels SET channels = '".mysql_real_escape_string($channels)."' WHERE server = '".mysql_real_escape_string($servers[($this->runs - 1)])."'"); }
+                               else {
+
+                                     $query = mysql_query("INSERT INTO `channels` (`id`, `server`, `channels`) VALUES (NULL, '".mysql_real_escape_string($servers[($this->runs - 1)])."', '".mysql_real_escape_string($channels)."');");
+  		}		
 				
 					$this->send_data('QUIT', ':'.$GLOBALS['quitmsg']);
 					sleep(1);
