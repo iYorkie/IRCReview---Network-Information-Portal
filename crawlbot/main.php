@@ -163,9 +163,13 @@
 					else {
 						$this->links = $this->links[0];
 					}
-					$fh = fopen($GLOBALS['initialDir'].date('m').'-'.date('d').'-'.date('Y').'-'.$servers[($this->runs - 1)]."-servers.txt", 'w');
-					fwrite($fh, $this->links);
-					fclose($fh);
+                                   $check_query = mysql_query("SELECT `id` FROM `links` WHERE `server` = '".mysql_real_escape_string($servers[($this->runs - 1)])."'");
+                     	   if (mysql_num_rows($check_query) == 1) { mysql_query("UPDATE links SET links = '".mysql_real_escape_string($this->links)."' WHERE server = '".mysql_real_escape_string($servers[($this->runs - 1)])."'"); }
+                               else {
+
+                                     $query = mysql_query("INSERT INTO `links` (`id`, `server`, `links`) VALUES (NULL, '".mysql_real_escape_string($servers[($this->runs - 1)])."', '".mysql_real_escape_string($this->links)."');");
+  		}		
+                            
 					unset($this->links);
 					$this->send_data('LIST');
 				}
@@ -177,9 +181,12 @@
 				if ($this->ex[1] == '376' || $this->ex[1] == '422')
 				{
 					$this->motd = implode("\r\n", $this->motd);
-					$fh = fopen($GLOBALS['initialDir'].date('m').'-'.date('d').'-'.date('Y').'-'.$servers[($this->runs - 1)]."-motd.txt", 'w');
-					fwrite($fh, $this->motd);
-					fclose($fh);
+                                     $check_query = mysql_query("SELECT `id` FROM `motd` WHERE `server` = '".mysql_real_escape_string($servers[($this->runs - 1)])."'");
+                     	   if (mysql_num_rows($check_query) == 1) { mysql_query("UPDATE motd SET motd = '".mysql_real_escape_string($this->motd)."' WHERE server = '".mysql_real_escape_string($servers[($this->runs - 1)])."'"); }
+                               else {
+
+                                     $query = mysql_query("INSERT INTO `motd` (`id`, `server`, `motd`) VALUES (NULL, '".mysql_real_escape_string($servers[($this->runs - 1)])."', '".mysql_real_escape_string($this->motd)."');");
+  		}		
 					unset($this->motd);
 					$this->send_data('LINKS');
 				}
