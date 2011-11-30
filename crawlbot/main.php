@@ -79,8 +79,6 @@
 				unset($this->runs);
 				$servers = null;
 				$i = 0;
-				 mysql_connect($mysqlhost, $$mysqluser, $mysqlpass);
-				mysql_select_db($mysqldatabase);
 				$result = mysql_query("SELECT * FROM `servers` ORDER BY `id` DESC");
 				while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 				if (trim($row['server']) != null) {
@@ -119,10 +117,14 @@
 				{
 					$users = split($this->ex[2].' :', $data);
 					$users = $users[1];
-					$fh = fopen($GLOBALS['initialDir'].date('m').'-'.date('d').'-'.date('Y').'-'.$servers[($this->runs - 1)]."-stats.txt", 'w');
-					fwrite($fh, $users);
-					fclose($fh);
-				}
+                                   $check_query = mysql_query("SELECT `id` FROM `users` WHERE `server` = '".mysql_real_escape_string($servers[($this->runs - 1)])."'");
+                     	   if (mysql_num_rows($check_query) == 1) { mysql_query("UPDATE users SET users = '".mysql_real_escape_string($users)."' WHERE server = '".mysql_real_escape_string($servers[($this->runs - 1)])."'"); }
+                               else {
+
+                                     $query = mysql_query("INSERT INTO `users` (`id`, `server`, `users`) VALUES (NULL, '".mysql_real_escape_string($servers[($this->runs - 1)])."', '".mysql_real_escape_string($users)."');");
+  		}		
+		
+}
 				if ($this->ex[1] == '322')
 				{
 					$count = count($this->channels);
