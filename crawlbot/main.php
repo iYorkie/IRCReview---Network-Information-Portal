@@ -27,17 +27,12 @@
 	ini_set("E_NOTICE", 0);
 	$i = 0;
 	// Connect to MySQL to grab the shizzle
-    mysql_connect($mysqlhost, $mysqluser, $mysqlpass);
-	mysql_select_db($mysqldatabase);
-	// This will be replaced with mysql stuff later
-	$fh = fopen($myFile, 'r');
-	$lines = fread($fh, filesize($myFile)) or die("No servers available for connection");
-	$lines = explode("\n", $lines);
-	fclose($fh);
-	foreach($lines as $server)
-	{
-		if (trim($server) != null) {
-			$servers[$i] = $server;
+    mysql_connect($GLOBALS['mysqlhost'], $GLOBALS['$mysqluser'], $GLOBALS['mysqlpass']);
+	mysql_select_db($GLOBALS['mysqldatabase']);
+    $result = mysql_query("SELECT * FROM `servers` ORDER BY `id` DESC");
+    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		if (trim($row['server']) != null) {
+			$servers[$i] = $row['server'];
 			$i++;
 		}
 	}
